@@ -7,7 +7,6 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
-import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common';
 
 @Controller('auth')
