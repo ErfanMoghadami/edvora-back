@@ -7,6 +7,8 @@ import { User } from "./modules/users/entities/user.entity";
 import { Student } from "./modules/students/entities/student.entity";
 import { Session } from "./modules/sessions/entities/session.entity";
 import { Payment } from "./modules/payments/entities/payment.entity";
+import { Term } from "./modules/terms/entities/term.entity";
+import { ClassEntity } from "./modules/classes/entities/class.entity";
 
 import { UsersModule } from "./modules/users/users.module";
 import { AuthModule } from "./modules/auth/auth.module";
@@ -15,6 +17,8 @@ import { SessionsModule } from "./modules/sessions/sessions.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { ShareModule } from "./modules/share/share.module";
 import { AdminModule } from "./modules/admin/admin.module";
+import { TermsModule } from "./modules/terms/terms.module";
+import { ClassesModule } from "./modules/classes/classes.module";
 
 @Module({
   imports: [
@@ -33,7 +37,7 @@ import { AdminModule } from "./modules/admin/admin.module";
         username: config.get<string>("database.username"),
         password: config.get<string>("database.password"),
         database: config.get<string>("database.database"),
-        entities: [User, Student, Session, Payment],
+        entities: [User, Student, Session, Payment, Term, ClassEntity],
         synchronize: true,
         logging: false,
       }),
@@ -46,6 +50,8 @@ import { AdminModule } from "./modules/admin/admin.module";
     PaymentsModule,
     ShareModule,
     AdminModule,
+    TermsModule,
+    ClassesModule,
   ],
 })
 export class AppModule {}

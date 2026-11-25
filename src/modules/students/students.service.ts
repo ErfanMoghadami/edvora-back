@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { randomBytes } from "crypto";
 
 import { Student } from "./entities/student.entity";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
+import { CreateQuickStudentDto } from "./dto/create-quick-student.dto";
 
 @Injectable()
 export class StudentsService {
@@ -31,6 +32,11 @@ export class StudentsService {
     return student;
   }
 
+  async findByIds(userId: string, ids: string[]): Promise<Student[]> {
+    if (ids.length === 0) return [];
+    return this.studentsRepo.find({ where: { userId, id: In(ids) } });
+  }
+
   async findByShareToken(token: string): Promise<Student | null> {
     return this.studentsRepo.findOne({ where: { shareToken: token } });
   }
@@ -51,6 +57,29 @@ export class StudentsService {
       paymentType: dto.paymentType,
       startDate: dto.startDate,
       shareToken,
+    });
+
+    return this.studentsRepo.save(student);
+  }
+
+  /** ساخت سریع شاگرد (از فرم کلاس): فقط نام و شماره، بقیه مقدار پیش‌فرض. */
+  async createQuick(
+    userId: string,
+    dto: CreateQuickStudentDto
+  ): Promise<Student> {
+    const student = this.studentsRepo.create({
+      userId,
+      name: dto.name,
+      phone: dto.phone,
+      notes: null,
+      programType: "weekly",
+      sessionsCount: 1,
+      sessionDuration: 60,
+      rateType: "per_session",
+      rateAmount: 0,
+      paymentType: "per_session",
+      startDate: new Date().toISOString().slice(0, 10),
+      shareToken: randomBytes(12).toString("hex"),
     });
 
     return this.studentsRepo.save(student);

@@ -12,6 +12,7 @@ import {
 import { StudentsService } from "./students.service";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
+import { CreateQuickStudentDto } from "./dto/create-quick-student.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CurrentUser } from "../auth/decorators/current-user.decorator";
 import { User } from "../users/entities/user.entity";
@@ -29,6 +30,15 @@ export class StudentsController {
   @Get(":id")
   findOne(@CurrentUser() user: User, @Param("id") id: string) {
     return this.studentsService.findById(user.id, id);
+  }
+
+  @Post("quick")
+  async createQuick(
+    @CurrentUser() user: User,
+    @Body() dto: CreateQuickStudentDto
+  ) {
+    const student = await this.studentsService.createQuick(user.id, dto);
+    return { id: student.id, name: student.name, phone: student.phone };
   }
 
   @Post()
