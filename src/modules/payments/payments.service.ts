@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
-import { Payment } from "./entities/payment.entity";
-import { Student } from "../students/entities/student.entity";
-import { CreatePaymentDto } from "./dto/create-payment.dto";
-import { UpdatePaymentDto } from "./dto/update-payment.dto";
+import { Payment } from './entities/payment.entity';
+import { Student } from '../students/entities/student.entity';
+import { CreatePaymentDto } from './dto/create-payment.dto';
+import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -13,20 +13,20 @@ export class PaymentsService {
     @InjectRepository(Payment)
     private readonly paymentsRepo: Repository<Payment>,
     @InjectRepository(Student)
-    private readonly studentsRepo: Repository<Student>
+    private readonly studentsRepo: Repository<Student>,
   ) {}
 
   async findAll(userId: string): Promise<Payment[]> {
     return this.paymentsRepo.find({
       where: { userId },
-      order: { date: "DESC", createdAt: "DESC" },
+      order: { date: 'DESC', createdAt: 'DESC' },
     });
   }
 
   async findByStudent(userId: string, studentId: string): Promise<Payment[]> {
     return this.paymentsRepo.find({
       where: { userId, studentId },
-      order: { date: "DESC", createdAt: "DESC" },
+      order: { date: 'DESC', createdAt: 'DESC' },
     });
   }
 
@@ -35,7 +35,7 @@ export class PaymentsService {
       where: { id, userId },
     });
     if (!payment) {
-      throw new NotFoundException("پرداخت یافت نشد");
+      throw new NotFoundException('پرداخت یافت نشد');
     }
     return payment;
   }
@@ -45,7 +45,7 @@ export class PaymentsService {
       where: { id: dto.studentId, userId },
     });
     if (!student) {
-      throw new NotFoundException("شاگرد یافت نشد");
+      throw new NotFoundException('شاگرد یافت نشد');
     }
 
     const payment = this.paymentsRepo.create({
@@ -63,7 +63,7 @@ export class PaymentsService {
   async update(
     userId: string,
     id: string,
-    dto: UpdatePaymentDto
+    dto: UpdatePaymentDto,
   ): Promise<Payment> {
     const payment = await this.findById(userId, id);
 
