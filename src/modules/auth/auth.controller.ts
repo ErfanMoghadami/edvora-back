@@ -8,6 +8,7 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { UnauthorizedException } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
 
 @Controller('auth')
 export class AuthController {
