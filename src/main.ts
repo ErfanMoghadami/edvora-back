@@ -33,7 +33,11 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(port, "0.0.0.0");
+  await app.listen(port, '0.0.0.0');
   console.log(`🚀 Server running on http://localhost:${port}/api`);
 }
-bootstrap();
+console.log('BOOTSTRAP START');
+bootstrap().catch((err) => {
+  console.error('BOOTSTRAP FAILED:', err);
+  process.exit(1);
+});
